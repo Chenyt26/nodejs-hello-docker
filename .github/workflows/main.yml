@@ -36,3 +36,4 @@ jobs:
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: mycontainer
             location: 'Central US'
+            restart-policy: OnFailure
