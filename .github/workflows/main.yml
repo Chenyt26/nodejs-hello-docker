@@ -29,11 +29,11 @@ jobs:
         - name: 'Deploy to Azure Container Instances'
           uses: 'azure/aci-deploy@v1'
           with:
-            resource-group: myresourcegroup1
-            dns-name-label: hdnmycontainer1
+            resource-group: myresourcegroup
+            dns-name-label: hdnmycontainer11
             image: hdnregister.azurecr.io/nodejssampleapp:${{ github.sha }}
             registry-username: ${{ secrets.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            name: mycontainer
+            name: mycontainer11
             location: 'Central US'
             restart-policy: OnFailure
