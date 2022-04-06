@@ -15,7 +15,7 @@ jobs:
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
-        workload_identity_provider: 'projects/634781802413/locations/global/workloadIdentityPools/hclouddemo/*'
+        workload_identity_provider: 'projects/634781802413/locations/global/workloadIdentityPools/hclouddemo/providers/githubactions'
         service_account: 'hcdemo@cr-test-345909.iam.gserviceaccount.com'
 
     - id: 'deploy'
