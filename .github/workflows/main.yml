@@ -1,39 +1,28 @@
 on:
   push:
     branches:
-       master
+       google-cloud-run
 name: Linux_Container_Workflow
 
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
-        steps:
-        # checkout the repo
-        - name: 'Checkout GitHub Action'
-          uses: actions/checkout@master
-          
-        - name: 'Login via Azure CLI'
-          uses: azure/login@v1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
-        - uses: azure/docker-login@v1
-          with:
-            login-server: hdnregister.azurecr.io
-            username: ${{ secrets.REGISTRY_USERNAME }}
-            password: ${{ secrets.REGISTRY_PASSWORD }}
-        - run: |
-            docker build . -t hdnregister.azurecr.io/nodejssampleapp:${{ github.sha }}
-            docker push hdnregister.azurecr.io/nodejssampleapp:${{ github.sha }}
+  job_id:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
-        - name: 'Deploy to Azure Container Instances'
-          uses: 'azure/aci-deploy@v1'
-          with:
-            resource-group: myresourcegroup
-            dns-name-label: hdnmycontainer11
-            image: hdnregister.azurecr.io/nodejssampleapp:${{ github.sha }}
-            registry-username: ${{ secrets.REGISTRY_USERNAME }}
-            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            name: hcdemo
-            location: 'Central US'
-            restart-policy: OnFailure
+    steps:
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        workload_identity_provider: 'projects/634781802413/locations/global/workloadIdentityPools/hclouddemo/*'
+        service_account: '634781802413-compute@developer.gserviceaccount.com'
+
+    - id: 'deploy'
+      uses: 'google-github-actions/deploy-cloudrun@v0'
+      with:
+        service: 'hello-cloud-run'
+        image: 'gcr.io/cr-test-345909/helloworld:latest'
+
+    - name: 'Use output'
+      run: 'curl "${{ steps.deploy.outputs.url }}"'
