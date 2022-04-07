@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-       cci1
+       cci
 name: Linux_Container_Workflow
 
 env:
