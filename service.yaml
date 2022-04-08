@@ -1,13 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cci-service        # Service的名称
+  name: cci-service
+  annotations:
+    kubernetes.io/elb.id: 4eeda4e2-fc4a-4d30-85e8-cb9df38f05d1
 spec:
-  selector:          # Label Selector，选择包含app=nginx标签的Pod
+  selector:
     app: cci-deployment
   ports:
   - name: service0
-    targetPort: 8080   # Pod的端口
-    port: 8080       # Service对外暴露的端口
-    protocol: TCP    # 转发协议类型，支持TCP和UDP
-  type: ClusterIP    # Service的类型
+    targetPort: 8080
+    port: 8080         # ELB访问端口
+    protocol: TCP
+  type: LoadBalancer   # Service的类型
