@@ -23,7 +23,7 @@ spec:
             cpu: 125m
             memory: 1024Mi
           requests:
-            cpu: 500m
+            cpu: 125m
             memory: 1024Mi
       imagePullSecrets:           # 拉取镜像使用的证书，必须为imagepull-secret
       - name: imagepull-secret
